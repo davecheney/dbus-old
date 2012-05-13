@@ -4,8 +4,8 @@ import (
 	"testing"
 )
 
-func TestDialSystemBus(t *testing.T) {
-	c, err := DialUnix("/var/run/dbus/system_bus_socket")
+func TestDialUnixSystemBus(t *testing.T) {
+	c, err := dialUnix("/var/run/dbus/system_bus_socket")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -15,9 +15,9 @@ func TestDialSystemBus(t *testing.T) {
 	c.Close()
 }	
 
-func TestDialSessionBus(t *testing.T) {
+func TestDialUnixSessionBus(t *testing.T) {
 	// TODO(dfc) hard coded, need to decode DBUS_SESSION_BUS_ADDRESS
-	c, err := DialUnix("@/tmp/dbus-dsfqbFM8Bp")
+	c, err := dialUnix("@/tmp/dbus-dsfqbFM8Bp")
 	if err != nil {
 		t.Fatal(err)
 	}
