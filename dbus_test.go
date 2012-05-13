@@ -2,7 +2,6 @@ package dbus
 
 import (
 	"testing"
-	"os"
 )
 
 func TestDialSystemBus(t *testing.T) {
