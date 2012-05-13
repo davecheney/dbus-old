@@ -1,6 +1,7 @@
 package dbus
 
 import (
+	"os"
 	"testing"
 )
 
@@ -13,11 +14,14 @@ func TestDialUnixSystemBus(t *testing.T) {
 		t.Fatal(err)
 	}
 	c.Close()
-}	
+}
 
 func TestDialUnixSessionBus(t *testing.T) {
-	// TODO(dfc) hard coded, need to decode DBUS_SESSION_BUS_ADDRESS
-	c, err := dialUnix("@/tmp/dbus-dsfqbFM8Bp")
+	addrs := ParseAddress(os.Getenv("DBUS_SESSION_BUS_ADDRESS"))
+	if len(addrs) < 1 {
+		t.Fatalf("Could not parse DBUS_SESSION_BUS_ADDRESS")
+	}
+	c, err := addrs[0].Dial()
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -25,5 +29,4 @@ func TestDialUnixSessionBus(t *testing.T) {
 		t.Fatal(err)
 	}
 	c.Close()
-}	
-
+}

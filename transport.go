@@ -3,17 +3,17 @@ package dbus
 // package dbus implements a dbus client described in
 // http://dbus.freedesktop.org/doc/dbus-specification.html
 
-import (	
-	"io"
-	"os"
-	"net"
-	"syscall"
+import (
 	"fmt"
+	"io"
+	"net"
+	"os"
+	"syscall"
 )
 
 type transport interface {
 	// Auth performs the AUTH handshake.
-	Auth() error 
+	Auth() error
 
 	io.Closer
 }
@@ -28,7 +28,7 @@ func dialUnix(path string) (transport, error) {
 	if err != nil {
 		return nil, err
 	}
-	return &unixTransport{ conn }, nil
+	return &unixTransport{conn}, nil
 }
 
 func (t *unixTransport) Auth() error {
@@ -36,8 +36,8 @@ func (t *unixTransport) Auth() error {
 		Pid: int32(os.Getpid()),
 		Uid: uint32(os.Getuid()),
 		Gid: uint32(os.Getgid()),
-	})	
-	_, _, err := t.WriteMsgUnix([]byte{ 0 }, cred, nil)
+	})
+	_, _, err := t.WriteMsgUnix([]byte{0}, cred, nil)
 	if err != nil {
 		return err
 	}
@@ -52,7 +52,7 @@ func (t *unixTransport) Auth() error {
 	}
 
 	fmt.Println(code, cookie)
-	
+
 	if _, err := fmt.Fprintf(t, "BEGIN\r\n"); err != nil {
 		return err
 	}
